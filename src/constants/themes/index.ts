@@ -4,27 +4,26 @@
  */
 
 import '@/global.css';
-
+import { darkPalette, darkSemantic } from "./dark-theme";
+import { lightPalette, lightSemantic } from "./default-theme";
 import { Platform } from 'react-native';
 
+/**
+ * Export final du thème complet
+ */
 export const Colors = {
   light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
+    palette: lightPalette,
+    semantic: lightSemantic,
   },
   dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
+    palette: darkPalette,
+    semantic: darkSemantic,
   },
-} as const;
+};
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export type ThemeColor = typeof Colors.light & keyof typeof Colors.dark;
+export type ThemeMode = "light" | "dark";
 
 export const Fonts = Platform.select({
   ios: {
