@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "../ui/Button";
-import { MenuFriesLeft1 } from "@tailgrids/icons";
-import { IconGhost } from "../icons/IconGhost";
+import { View, Text, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { IconMenu2, IconGhost } from "tabler-icons-react-native";
 
 interface MobileTopBarProps {
   onToggleSidebar: () => void;
@@ -15,61 +15,59 @@ const MobileTopBar: React.FC<MobileTopBarProps> = ({
   const [isIncognito, setIsIncognito] = useState(false);
 
   const handleIncognitoToggle = () => {
-    setIsIncognito(!isIncognito);
+    setIsIncognito((prev) => !prev);
     onToggleIncognito?.();
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 md:hidden bg-background-soft-50">
-      <div
-        className={`h-16 flex items-center justify-between px-4 border-b transition-colors duration-200 ${
-          isIncognito ? "border-gray-800" : "border-gray-200"
+    <SafeAreaView edges={["top"]} className="bg-background-soft-50">
+      {/* Topbar */}
+      <View
+        className={`h-16 flex-row items-center justify-between px-4 border-b ${
+          isIncognito ? "border-neutral-800" : "border-background-soft-300"
         }`}
       >
-        {/* Menu Burger - Gauche */}
-        <Button
-          iconOnly
-          onClick={onToggleSidebar}
-          className={`p-2 rounded-lg transition-colors duration-200 bg-transparent text-primary-500 focus-visible:hidden outline-none focus:ring-0 focus:ring-transparent`}
-          aria-label="Menu"
+        {/* Menu button */}
+        <Pressable
+          onPress={onToggleSidebar}
+          className="w-11 h-11 rounded-xl items-center justify-center active:opacity-70"
+          accessibilityLabel="Menu"
         >
-          <MenuFriesLeft1 size={24} />
-        </Button>
+          <IconMenu2 size={24} color="#0A3625" />
+        </Pressable>
 
-        {/* Bouton Incognito - Droite */}
-        <Button
-          iconOnly
-          onClick={handleIncognitoToggle}
-          className={`p-2 rounded-lg transition-all duration-200 relative focus-visible:hidden outline-none focus:ring-0 focus:ring-transparent ${
-            isIncognito
-              ? "bg-purple-600 text-white"
-              : "text-primary-500 bg-transparent"
-          }`}
-          aria-label={
+        {/* Incognito button */}
+        <Pressable
+          onPress={handleIncognitoToggle}
+          accessibilityLabel={
             isIncognito ? "Désactiver le mode privé" : "Activer le mode privé"
           }
+          className={`w-11 h-11 rounded-xl items-center justify-center relative ${
+            isIncognito ? "bg-purple-600" : "bg-transparent"
+          }`}
         >
-          {/* <EyeDisabled size={22} /> */}
+          <IconGhost size={28} color={isIncognito ? "#ffffff" : "#0A3625"} />
 
-          <IconGhost size={28} />
-
-          {/* Indicateur de mode incognito */}
+          {/* Indicator */}
           {isIncognito && (
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-purple-400 rounded-full animate-pulse" />
+            <View className="absolute top-1 right-1 w-3 h-3 rounded-full bg-purple-400" />
           )}
-        </Button>
-      </div>
+        </Pressable>
+      </View>
 
-      {/* Message mode incognito */}
+      {/* Incognito banner */}
       {isIncognito && (
-        <div className="bg-primary-500 text-background-soft-400 text-xs text-center py-1.5 px-4 border-b border-gray-700">
-          <span className="flex items-center justify-center gap-2">
-            <IconGhost size={14} />
-            Navigation privée activée
-          </span>
-        </div>
+        <View className="px-4 py-2 border-b border-neutral-800 bg-primary-500">
+          <View className="flex-row items-center justify-center gap-2">
+            <IconGhost size={14} color="#F6F8E8" />
+
+            <Text className="text-xs text-background-soft-50">
+              Navigation privée activée
+            </Text>
+          </View>
+        </View>
       )}
-    </header>
+    </SafeAreaView>
   );
 };
 

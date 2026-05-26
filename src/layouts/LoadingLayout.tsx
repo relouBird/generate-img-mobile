@@ -7,6 +7,7 @@ import avoraLogo from "@/assets/logos/avora.png";
 import { useStore } from "zustand";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/themes";
+import { useColorThemeScheme } from "@/hooks/theme-context";
 
 /**
  * Layout de base sans topbar ni sidebar.
@@ -17,8 +18,8 @@ export function LoadingLayout() {
   const { isInitalized } = useStore(useConversationStore);
   const routeur = useRouter();
 
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
+  const { theme } = useColorThemeScheme();
+  const colors = Colors[theme === "light" ? "light" : theme];
 
   // Charge la liste des conversations au montage
   useEffect(() => {

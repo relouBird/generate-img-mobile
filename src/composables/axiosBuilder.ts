@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
-import { v4 as uuidv4 } from "uuid";
+import uuid from "react-native-uuid";
 import type { ErrorBackend } from "@/types/error.type";
 
 export default function axiosBuilder() {
@@ -7,7 +7,9 @@ export default function axiosBuilder() {
    * axios setup to use mock service
    */
 
-  const baseURL = (process.env.EXPO_PUBLIC_API_BASE_URL ?? "").replace(/"/g, "").trim();
+  const baseURL = (process.env.EXPO_PUBLIC_API_BASE_URL ?? "")
+    .replace(/"/g, "")
+    .trim();
 
   if (!baseURL) {
     console.error("EXPO_PUBLIC_API_BASE_URL is not defined");
@@ -22,7 +24,7 @@ export default function axiosBuilder() {
    * Se produit juste avant l'envoi de la requête
    */
   api.interceptors.request.use((config) => {
-    const requestId = config.headers["x-request-id"] ?? uuidv4();
+    const requestId = config.headers["x-request-id"] ?? uuid.v4();
 
     if (!config.headers["x-request-id"]) {
       config.headers["x-request-id"] = requestId;
