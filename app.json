@@ -17,7 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.generateimgmobile"
     },
     "web": {
       "output": "static",
@@ -32,6 +33,37 @@
           "android": {
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 76
+          }
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/dm-sans-latin-400-normal.ttf",
+            "./assets/fonts/original-surfer-latin-400-normal.ttf"
+          ],
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "DMSans-Regular",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/dm-sans-latin-400-normal.ttf",
+                    "weight": 400
+                  }
+                ]
+              },
+              {
+                "fontFamily": "OriginalSurfer-Regular",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/original-surfer-latin-400-normal.ttf",
+                    "weight": 400
+                  }
+                ]
+              }
+            ]
           }
         }
       ]
