@@ -10,14 +10,17 @@ import Svg, { Path } from "react-native-svg";
 import { Image } from "expo-image";
 import avoraLogo from "@/assets/logos/avora.png";
 
-import { IconPlus } from "tabler-icons-react-native";
+import { PlusIcon as IconPlus } from "lucide-react-native";
 
 type Props = {
   onNewConversation: () => void;
   onClose?: () => void;
 };
 
-export function ConversationSidebar({ onNewConversation, onClose }: Props) {
+export default function ConversationSidebar({
+  onNewConversation,
+  onClose,
+}: Props) {
   const [search, setSearch] = useState("");
 
   const {

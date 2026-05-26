@@ -18,7 +18,7 @@ import {
 // ─── State ────────────────────────────────────────────────────────────────────
 
 type ConversationStoreState = {
-  isInitalized: boolean; // Vrai après le premier fetchAllConversations pour éviter les fetch redondants
+  isInitialized: boolean; // Vrai après le premier fetchAllConversations pour éviter les fetch redondants
   /** Liste des conversations (sidebar) */
   conversations: ConversationSummaryType[];
   /** ID de la conversation active */
@@ -59,7 +59,7 @@ export const useConversationStore = create<
       messages: [],
       isGenerating: false,
       isLoading: false,
-      isInitalized: false,
+      isInitialized: false,
       // ── Fetch liste sidebar ──────────────────────────────────────────────────────
       fetchAllConversations: async () => {
         try {
@@ -69,7 +69,7 @@ export const useConversationStore = create<
 
           if (response.status === 200 || response.status === 201) {
             set({ conversations: response.data.data });
-            set({ isInitalized: true });
+            set({ isInitialized: true });
           }
         } catch (error) {
           console.error("Failed to fetch conversations:", error);
@@ -224,7 +224,7 @@ export const useConversationStore = create<
           messages: [],
           isGenerating: false,
           isLoading: false,
-          isInitalized: false,
+          isInitialized: false,
         }),
     }),
     {

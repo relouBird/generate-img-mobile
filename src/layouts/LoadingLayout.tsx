@@ -1,10 +1,7 @@
-import { useConversationStore } from "@/stores/conversation.store";
-import { useEffect } from "react";
-import { View, Text, useColorScheme } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import { Image } from "expo-image";
-import { useRouter, Slot } from "expo-router";
+import { Slot } from "expo-router";
 import avoraLogo from "@/assets/logos/avora.png";
-import { useStore } from "zustand";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/themes";
 import { useColorThemeScheme } from "@/hooks/theme-context";
@@ -15,31 +12,22 @@ import { useColorThemeScheme } from "@/hooks/theme-context";
  * AuthLayout pourra étendre ce même pattern plus tard.
  */
 export function LoadingLayout() {
-  const { isInitalized } = useStore(useConversationStore);
-  const routeur = useRouter();
+  const { height } = useWindowDimensions();
 
   const { theme } = useColorThemeScheme();
   const colors = Colors[theme === "light" ? "light" : theme];
 
-  // Charge la liste des conversations au montage
-  useEffect(() => {
-    if (isInitalized) {
-      const t = setTimeout(() => {
-        routeur.push("/");
-      }, 4000);
-      return () => clearTimeout(t);
-    }
-  }, [isInitalized, routeur]);
   return (
     <SafeAreaProvider>
       <SafeAreaView
         style={{
-          flex: 1,
+          width: "100%",
+          height,
         }}
       >
         <View
           style={{
-            flex: 1,
+            height,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

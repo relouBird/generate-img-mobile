@@ -1,51 +1,38 @@
-import { Slot, useRouter } from "expo-router";
-import { ConversationSidebar } from "@/components/conversations/ConversationSidebar";
+import { Slot } from "expo-router";
 import { useStore } from "zustand";
 import { useConversationStore } from "@/stores/conversation.store";
 import { useEffect, useRef, useState } from "react";
 import {
   DrawerLayoutAndroid,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
+  Text,
+  Platform,
 } from "react-native";
 
+import ConversationSidebar from "@/components/conversations/ConversationSidebar";
 import MobileTopBar from "@/components/display/MobileTopBar";
 import { Colors } from "@/constants/themes";
 import { useColorThemeScheme } from "@/hooks/theme-context";
+import ConversationSidebarWeb from "@/components/conversations/ConversationSidebarWeb";
 
 /**
  * Layout de base sans topbar ni sidebar.
  * Utilisé par ConversationsPage (et potentiellement d'autres pages).
  * AuthLayout pourra étendre ce même pattern plus tard.
  */
-export function DefaultLayout() {
+export const DefaultLayout = () => {
   const drawer = useRef<DrawerLayoutAndroid>(null);
 
-  const {
-    fetchAllConversations,
-    clearActiveConversation,
-    isInitalized: isInitialized,
-  } = useStore(useConversationStore);
+  const { clearActiveConversation } = useStore(useConversationStore);
 
   const { theme } = useColorThemeScheme();
   const themeKey = theme === "dark" ? "dark" : "light";
   const colors = Colors[themeKey];
 
-  const navigate = useRouter();
-
   // Valeurs réactives
   const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
   const styles = getStyles(colors.palette.background.soft50);
-
-  // Charge la liste des conversations au montage
-  useEffect(() => {
-    if (!isInitialized) {
-      navigate.push("/loading");
-    }
-    fetchAllConversations();
-  }, [fetchAllConversations, isInitialized, navigate]);
 
   const handleNewConversation = () => {
     clearActiveConversation();
@@ -54,7 +41,6 @@ export function DefaultLayout() {
 
   const navigationView = () => (
     <View>
-      {/* Sidebar */}
       <ConversationSidebar
         onClose={() => setToggleSidebar(false)}
         onNewConversation={handleNewConversation}
@@ -70,11 +56,33 @@ export function DefaultLayout() {
     }
   }, [toggleSidebar]);
 
+  if (Platform.OS !== "android") {
+    // Sur iOS et Web, tu n’utilises pas DrawerLayoutAndroid
+    return (
+      <View className="min-h-screen bg-background-soft-50 font-surfer">
+        <View className="flex h-screen overflow-hidden">
+          <MobileTopBar
+            onToggleSidebar={() => {
+              setToggleSidebar(!toggleSidebar);
+            }}
+          />
+          {/* Sidebar */}
+          <ConversationSidebarWeb
+            sideview={toggleSidebar}
+            onClose={() => setToggleSidebar(false)}
+            onNewConversation={handleNewConversation}
+          />
+          <Slot />
+        </View>
+      </View>
+    );
+  }
+
   return (
     <DrawerLayoutAndroid
       ref={drawer}
       drawerWidth={300}
-      drawerPosition={"left"}
+      drawerPosition="left"
       renderNavigationView={navigationView}
     >
       <View style={styles.container}>
@@ -84,12 +92,13 @@ export function DefaultLayout() {
               setToggleSidebar(!toggleSidebar);
             }}
           />
+          <Text>Test sans composants</Text>
           <Slot />
         </View>
       </View>
     </DrawerLayoutAndroid>
   );
-}
+};
 
 function getStyles(bg: string) {
   return StyleSheet.create({
@@ -99,10 +108,9 @@ function getStyles(bg: string) {
       backgroundColor: bg,
       alignItems: "center",
       justifyContent: "center",
-      fontFamily: "OriginalSurfer-Regular",
     },
     childContainer: {
-      display: "flex",
+      width: "100%",
       height: "100%",
       overflow: "hidden",
     },

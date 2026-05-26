@@ -1,7 +1,6 @@
-@import "./styles/theme.css";
-/* This file adds the requisite utility classes for Tailwind to work. */
-/* stylelint-disable at-rule-no-unknown */
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --font-display:
@@ -13,5 +12,28 @@
   --font-serif: Georgia, 'Times New Roman', serif;
 }
 
+/* =========================================================
+   BASE STYLES
+   ========================================================= */
 
+@layer base {
+  * {
+    border-color: var(--border);
+  }
 
+  html {
+    font-family: var(--font-sans);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
-import { IconMoon, IconSun } from "tabler-icons-react-native";
+import { MoonIcon, SunIcon } from "lucide-react-native";
 
 import { useTheme } from "@/hooks/use-theme";
 import { useColorThemeScheme } from "@/hooks/theme-context";
@@ -32,7 +32,7 @@ export default function ThemeSelector() {
             backgroundColor: colors.palette.background.soft200,
           }}
         >
-          <IconSun size={18} color={colors.palette.foreground.soft500} />
+          <SunIcon size={18} color={colors.palette.foreground.soft500} />
         </View>
 
         <View>
@@ -64,7 +64,7 @@ export default function ThemeSelector() {
               : "transparent",
           }}
         >
-          <IconSun
+          <SunIcon
             size={18}
             color={
               !isDark
@@ -84,7 +84,7 @@ export default function ThemeSelector() {
               : "transparent",
           }}
         >
-          <IconMoon
+          <MoonIcon
             size={18}
             color={
               isDark

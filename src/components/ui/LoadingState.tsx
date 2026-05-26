@@ -23,7 +23,7 @@ export function LoadingState() {
 
   useEffect(() => {
     progress.value = withRepeat(
-      withTiming(1, { duration: 10000, easing: Easing.linear }),
+      withTiming(1, { duration: 1500, easing: Easing.linear }),
       -1,
       false,
     );
